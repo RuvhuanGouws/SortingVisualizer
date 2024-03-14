@@ -1,4 +1,4 @@
-﻿@page "/sorting-visualizer"
+﻿@page "/"
 @using global::SortingVisualizer.SortingAlgorithms
 
 <h1>Sorting Visualizer</h1>
@@ -12,10 +12,10 @@
 </select>
 
 
-<div style="display: flex; align-items: flex-end; height: 500px;">
+<div style="display: flex; align-items: flex-end; height: 700px;">
     @foreach (var number in ArrayToSort)
     {
-        <div style="width: 10px !important; background: blue !important; margin: 0 2px !important; min-height: @(number * 5)px !important; transition: height 0.9s;"></div>
+        <div style="width: 12px; background: blue ; margin: 0 2px; min-height: @(number * 6)px; transition: height 0.9s;"></div>
     }
 </div>
 
@@ -23,7 +23,7 @@
     private int[] ArrayToSort = [];
     private int SelectedAlgorithmIndex;
 
-    private ISortingAlgorithm[]? SortingAlgorithms = {
+    private ISortingAlgorithm[] SortingAlgorithms = {
             new BubbleSort(),
             new QuickSort(),
             new SelectionSort(),
@@ -34,7 +34,7 @@
         Random random = new Random();
         ArrayToSort = Enumerable.Range(1, 100).OrderBy(x => random.Next()).ToArray();
 
-        SortingAlgorithms[SelectedAlgorithmIndex].OnChange += UpdateUI;
+        SortingAlgorithms[SelectedAlgorithmIndex].OnChange += UpdateUI!;
 
         SortingAlgorithms[SelectedAlgorithmIndex].Sort(ArrayToSort);
     }
