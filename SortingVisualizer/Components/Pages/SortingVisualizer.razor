@@ -1,0 +1,47 @@
+﻿@page "/sorting-visualizer"
+@using global::SortingVisualizer.SortingAlgorithms
+
+<h1>Sorting Visualizer</h1>
+
+<button @onclick="Sort">Sort Array</button>
+<select @bind="SelectedAlgorithmIndex">
+    @for (var i = 0; i < SortingAlgorithms.Count(); i++)
+    {
+        <option value="@i">@SortingAlgorithms[i].GetType().Name</option>
+    }
+</select>
+
+
+<div style="display: flex; align-items: flex-end; height: 500px;">
+    @foreach (var number in ArrayToSort)
+    {
+        <div style="width: 10px !important; background: blue !important; margin: 0 2px !important; min-height: @(number * 5)px !important; transition: height 0.9s;"></div>
+    }
+</div>
+
+@code {
+    private int[] ArrayToSort = [];
+    private int SelectedAlgorithmIndex;
+
+    private ISortingAlgorithm[]? SortingAlgorithms = {
+            new BubbleSort(),
+            new QuickSort(),
+            new SelectionSort(),
+    };
+
+    private void Sort()
+    {
+        Random random = new Random();
+        ArrayToSort = Enumerable.Range(1, 100).OrderBy(x => random.Next()).ToArray();
+
+        SortingAlgorithms[SelectedAlgorithmIndex].OnChange += UpdateUI;
+
+        SortingAlgorithms[SelectedAlgorithmIndex].Sort(ArrayToSort);
+    }
+
+    private void UpdateUI(object sender, EventArgs e)
+    {
+        StateHasChanged();
+    }
+
+}
